@@ -10,4 +10,9 @@ declare module "@hapi/hapi" {
 			jobs: Map<string, HapiCronJob>;
 		};
 	}
+	export interface PluginsStates {
+		hapiCron: {
+			job: HapiCronJob;
+		};
+	}
 }
