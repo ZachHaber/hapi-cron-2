@@ -16,6 +16,7 @@ export function assert(assertion) {
 export const baseJob = {
 	name: "testcron",
 	crontab: "*/10 * * * * *",
+	timezone: "Europe/London",
 	request: {
 		method: "GET",
 		url: "/test-url",
