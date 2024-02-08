@@ -12,18 +12,18 @@ declare module "@hapi/hapi" {
 			 * Gets the job associated with a name
 			 * @param name The name of the job to retrieve
 			 */
-			get(name: string): HapiCronJob | undefined;
+			getJob(name: string): HapiCronJob | undefined;
 			/**
 			 * Adds a new job to the scheduler
 			 * @param job The cronjob to add
 			 */
-			add(job: HapiCronJobOptions): void;
+			addJob(job: HapiCronJobOptions): void;
 			/**
 			 * Stops and removes a job from the list of jobs
 			 * @param name The name of the job to remove
 			 * @returns `true` if a job was removed, `false` otherwise - when there was no job to remove
 			 */
-			remove(name: string): boolean;
+			removeJob(name: string): boolean;
 			/**
 			 * Toggles a job's running state. If `changeTo` is specified, then the state will be changed to that.
 			 * @param name The name of the job to toggle
