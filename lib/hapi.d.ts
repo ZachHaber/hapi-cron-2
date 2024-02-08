@@ -1,5 +1,5 @@
 import type {} from "@hapi/hapi";
-import { HapiCronJob } from "./index.js";
+import { HapiCronJob, HapiCronJobOptions } from "./index.js";
 export * from "./hapi.js";
 declare module "@hapi/hapi" {
 	export interface PluginProperties {
@@ -13,6 +13,11 @@ declare module "@hapi/hapi" {
 			 * @param name The name of the job to retrieve
 			 */
 			get(name: string): HapiCronJob | undefined;
+			/**
+			 * Adds a new job to the scheduler
+			 * @param job The cronjob to add
+			 */
+			add(job: HapiCronJobOptions): void;
 		};
 	}
 	export interface PluginsStates {
