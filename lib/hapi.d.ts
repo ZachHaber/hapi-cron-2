@@ -8,6 +8,11 @@ declare module "@hapi/hapi" {
 			 * The jobs that currently exist.
 			 */
 			jobs: Map<string, HapiCronJob>;
+			/**
+			 * Gets the job associated with a name
+			 * @param name The name of the job to retrieve
+			 */
+			get(name: string): HapiCronJob | undefined;
 		};
 	}
 	export interface PluginsStates {
