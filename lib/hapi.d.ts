@@ -24,6 +24,14 @@ declare module "@hapi/hapi" {
 			 * @returns `true` if a job was removed, `false` otherwise - when there was no job to remove
 			 */
 			remove(name: string): boolean;
+			/**
+			 * Toggles a job's running state. If `changeTo` is specified, then the state will be changed to that.
+			 * @param name The name of the job to toggle
+			 * @param changeTo `true` to run start the job, `false` to stop the job, `undefined` to toggle the running status
+			 * Will be a no-op if the job is already in the correct state.
+			 * @returns the job's new running status, or `false` if the job didn't exist
+			 */
+			toggleJob(name: string, changeTo?: boolean): boolean;
 		};
 	}
 	export interface PluginsStates {
