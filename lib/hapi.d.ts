@@ -1,10 +1,13 @@
 import type {} from "@hapi/hapi";
-import { CronJob } from "cron";
+import { HapiCronJob } from "./index.js";
 export * from "./hapi.js";
 declare module "@hapi/hapi" {
 	export interface PluginProperties {
 		"hapi-cron-forked": {
-			jobs: Map<string, CronJob>;
+			/**
+			 * The jobs that currently exist.
+			 */
+			jobs: Map<string, HapiCronJob>;
 		};
 	}
 }
