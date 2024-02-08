@@ -1,5 +1,5 @@
 import { Server } from "@hapi/hapi";
-import { describe, expect, it, jest } from "@jest/globals";
+import { describe, expect, it } from "@jest/globals";
 import HapiCron from "../lib/index.js";
 import { assert, baseJob, createServer, runServer } from "./_utils.js";
 
@@ -123,12 +123,10 @@ describe("registration assertions", () => {
 		}
 	});
 
-	it("should throw error when a job is defined without a timezone", async () => {
-		const server = new Server();
-
-		try {
+	it("should work with a global timezone or without any", async () => {
+		{
+			const server = new Server();
 			await server.register({
-				// @ts-ignore
 				plugin: HapiCron,
 				options: {
 					jobs: [
@@ -142,8 +140,24 @@ describe("registration assertions", () => {
 					],
 				},
 			});
-		} catch (/** @type {any} */ err) {
-			expect(err.message).toEqual("Missing job time zone");
+		}
+		{
+			const server = new Server();
+			await server.register({
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testcron",
+							crontab: "*/10 * * * * *",
+							request: {
+								url: "/test-url",
+							},
+						},
+					],
+					timezone: "Europe/London",
+				},
+			});
 		}
 	});
 

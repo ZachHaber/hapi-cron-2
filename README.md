@@ -63,13 +63,22 @@ allSystemsGo();
 
 ## Options
 
-- `name` - A unique name for the cron job
-- `crontab` - A valid cron value. [See cron configuration](#cron-configuration)
-- `timezone` - A valid [timezone](https://momentjs.com/timezone/)
-- `request` - The request object containing the route url path. Other [options](https://hapi.dev/api/#-await-serverinjectoptions) can also be passed into the request object
+`HapiCronOptions`
+
+- `jobs: HapiCronJobConfig[]` - An array of `HapiCronJobConfig` options - [See below](#job-options)
+- `timezone?: string` - A valid [timezone](https://momentjs.com/timezone/) - `optional`
+
+## Job Options
+
+`HapiCronJobConfig`
+
+- `name: string` - A unique name for the cron job
+- `crontab: string` - A valid cron value. [See cron configuration](#cron-configuration)
+- `timezone?: string` - A valid [timezone](https://momentjs.com/timezone/) - `optional`. If this is undefined, the `HapiCronOptions.timezone` will be used. The server's local timezone will be used if both this _and_ the `HapiCronOptions.timezone` are undefined!
+- `request: object` - The request object containing the route url path. Other [options](https://hapi.dev/api/#-await-serverinjectoptions) can also be passed into the request object
   - `url` - Route path to request
   - `method` - Request method (defaults to `GET`) - `optional`
-- `onComplete` - A synchronous function to run after the route has been requested. The function will contain the entire injection result from the request - `optional`
+- `onComplete: (result)=>void` - A synchronous function to run after the route has been requested. The function will contain the entire injection result from the request - `optional`
 
 ## Cron configuration
 

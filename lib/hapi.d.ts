@@ -1,5 +1,5 @@
 import type {} from "@hapi/hapi";
-import { HapiCronJob, HapiCronJobOptions } from "./index.js";
+import { HapiCronJob, HapiCronJobConfig } from "./index.js";
 export * from "./hapi.js";
 declare module "@hapi/hapi" {
 	export interface PluginProperties {
@@ -17,7 +17,7 @@ declare module "@hapi/hapi" {
 			 * Adds a new job to the scheduler
 			 * @param job The cronjob to add
 			 */
-			addJob(job: HapiCronJobOptions): void;
+			addJob(job: HapiCronJobConfig): void;
 			/**
 			 * Stops and removes a job from the list of jobs
 			 * @param name The name of the job to remove
