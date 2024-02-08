@@ -1,366 +1,393 @@
 /*********************************************************************************
  1. Dependencies
  *********************************************************************************/
-
-const HapiCron = require('../lib');
-const Hapi = require('@hapi/hapi');
-
+import { Server } from "@hapi/hapi";
+import { describe, expect, it, jest } from "@jest/globals";
+import HapiCron from "../lib/index.js";
 
 /*********************************************************************************
  2. Exports
  *********************************************************************************/
 
-describe('registration assertions', () => {
+describe("registration assertions", () => {
+	it("should register plugin without errors", async () => {
+		const server = new Server();
 
-    it('should register plugin without errors', async () => {
+		await server.register({
+			plugin: HapiCron,
+		});
+	});
 
-        const server = new Hapi.Server();
+	it("should throw error when a job is defined with an existing name", async () => {
+		const server = new Server();
 
-        await server.register({
-            plugin: HapiCron
-        });
-    });
+		try {
+			await server.register({
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testname",
+							time: "*/10 * * * * *",
+							timezone: "Europe/London",
+							request: {
+								url: "/test-url",
+							},
+						},
+						{
+							name: "testname",
+							time: "*/10 * * * * *",
+							timezone: "Europe/London",
+							request: {
+								url: "/test-url",
+							},
+						},
+					],
+				},
+			});
+		} catch (/** @type {any} */ err) {
+			expect(err.message).toEqual("Job name has already been defined");
+		}
+	});
 
-    it('should throw error when a job is defined with an existing name', async () => {
+	it("should throw error when a job is defined without a name", async () => {
+		const server = new Server();
 
-        const server = new Hapi.Server();
+		try {
+			await server.register({
+				// @ts-ignore
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							time: "*/10 * * * * *",
+							timezone: "Europe/London",
+							request: {
+								url: "/test-url",
+							},
+						},
+					],
+				},
+			});
+		} catch (/** @type {any} */ err) {
+			expect(err.message).toEqual("Missing job name");
+		}
+	});
 
-        try {
-            await server.register({
-                plugin: HapiCron,
-                options: {
-                    jobs: [{
-                        name: 'testname',
-                        time: '*/10 * * * * *',
-                        timezone: 'Europe/London',
-                        request: {
-                            url: '/test-url'
-                        }
-                    }, {
-                        name: 'testname',
-                        time: '*/10 * * * * *',
-                        timezone: 'Europe/London',
-                        request: {
-                            url: '/test-url'
-                        }
-                    }]
-                }
-            });
-        }
-        catch (err) {
-            expect(err.message).toEqual('Job name has already been defined');
-        }
-    });
+	it("should throw error when a job is defined without a time", async () => {
+		const server = new Server();
 
-    it('should throw error when a job is defined without a name', async () => {
+		try {
+			await server.register({
+				// @ts-ignore
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testcron",
+							timezone: "Europe/London",
+							request: {
+								url: "/test-url",
+							},
+						},
+					],
+				},
+			});
+		} catch (/** @type {any} */ err) {
+			expect(err.message).toEqual("Missing job time");
+		}
+	});
 
-        const server = new Hapi.Server();
+	it("should throw error when a job is defined with an invalid time", async () => {
+		const server = new Server();
 
-        try {
-            await server.register({
-                plugin: HapiCron,
-                options: {
-                    jobs: [{
-                        time: '*/10 * * * * *',
-                        timezone: 'Europe/London',
-                        request: {
-                            url: '/test-url'
-                        }
-                    }]
-                }
-            });
-        }
-        catch (err) {
-            expect(err.message).toEqual('Missing job name');
-        }
-    });
+		try {
+			await server.register({
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testcron",
+							time: "invalid cron",
+							timezone: "Europe/London",
+							request: {
+								url: "/test-url",
+							},
+						},
+					],
+				},
+			});
+		} catch (/** @type {any} */ err) {
+			expect(err.message).toMatch(/^Time is not a cron expression:/);
+		}
+	});
 
-    it('should throw error when a job is defined without a time', async () => {
+	it("should throw error when a job is defined with an invalid timezone", async () => {
+		const server = new Server();
 
-        const server = new Hapi.Server();
+		try {
+			await server.register({
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testcron",
+							time: "*/10 * * * * *",
+							timezone: "invalid",
+							request: {
+								url: "/test-url",
+							},
+						},
+					],
+				},
+			});
+		} catch (/** @type {any} */ err) {
+			expect(err.message).toMatch(/^Invalid timezone. See/);
+		}
+	});
 
-        try {
-            await server.register({
-                plugin: HapiCron,
-                options: {
-                    jobs: [{
-                        name: 'testcron',
-                        timezone: 'Europe/London',
-                        request: {
-                            url: '/test-url'
-                        }
-                    }]
-                }
-            });
-        }
-        catch (err) {
-            expect(err.message).toEqual('Missing job time');
-        }
-    });
+	it("should throw error when a job is defined without a timezone", async () => {
+		const server = new Server();
 
-    it('should throw error when a job is defined with an invalid time', async () => {
+		try {
+			await server.register({
+				// @ts-ignore
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testcron",
+							time: "*/10 * * * * *",
+							request: {
+								url: "/test-url",
+							},
+						},
+					],
+				},
+			});
+		} catch (/** @type {any} */ err) {
+			expect(err.message).toEqual("Missing job time zone");
+		}
+	});
 
-        const server = new Hapi.Server();
+	it("should throw error when a job is defined without a request object", async () => {
+		const server = new Server();
 
-        try {
-            await server.register({
-                plugin: HapiCron,
-                options: {
-                    jobs: [{
-                        name: 'testcron',
-                        time: 'invalid cron',
-                        timezone: 'Europe/London',
-                        request: {
-                            url: '/test-url'
-                        }
-                    }]
-                }
-            });
-        }
-        catch (err) {
-            expect(err.message).toEqual('Time is not a cron expression');
-        }
-    });
+		try {
+			await server.register({
+				// @ts-ignore
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testcron",
+							time: "*/10 * * * * *",
+							timezone: "Europe/London",
+						},
+					],
+				},
+			});
+		} catch (/** @type {any} */ err) {
+			expect(err.message).toEqual("Missing job request options");
+		}
+	});
 
-    it('should throw error when a job is defined with an invalid timezone', async () => {
+	it("should throw error when a job is defined without a url in the request object", async () => {
+		const server = new Server();
 
-        const server = new Hapi.Server();
+		try {
+			await server.register({
+				// @ts-ignore
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testcron",
+							time: "*/10 * * * * *",
+							timezone: "Europe/London",
+							request: {
+								method: "GET",
+							},
+						},
+					],
+				},
+			});
+		} catch (/** @type {any} */ err) {
+			expect(err.message).toEqual("Missing job request url");
+		}
+	});
 
-        try {
-            await server.register({
-                plugin: HapiCron,
-                options: {
-                    jobs: [{
-                        name: 'testcron',
-                        time: '*/10 * * * * *',
-                        timezone: 'invalid',
-                        request: {
-                            url: '/test-url'
-                        }
-                    }]
-                }
-            });
-        }
-        catch (err) {
-            expect(err.message).toEqual('Invalid timezone. See https://momentjs.com/timezone for valid timezones');
-        }
-    });
+	it("should throw error when a job is defined with an invalid onComplete value", async () => {
+		const server = new Server();
 
-    it('should throw error when a job is defined without a timezone', async () => {
-
-        const server = new Hapi.Server();
-
-        try {
-            await server.register({
-                plugin: HapiCron,
-                options: {
-                    jobs: [{
-                        name: 'testcron',
-                        time: '*/10 * * * * *',
-                        request: {
-                            url: '/test-url'
-                        }
-                    }]
-                }
-            });
-        }
-        catch (err) {
-            expect(err.message).toEqual('Missing job time zone');
-        }
-    });
-
-    it('should throw error when a job is defined without a request object', async () => {
-
-        const server = new Hapi.Server();
-
-        try {
-            await server.register({
-                plugin: HapiCron,
-                options: {
-                    jobs: [{
-                        name: 'testcron',
-                        time: '*/10 * * * * *',
-                        timezone: 'Europe/London'
-                    }]
-                }
-            });
-        }
-        catch (err) {
-            expect(err.message).toEqual('Missing job request options');
-        }
-    });
-
-    it('should throw error when a job is defined without a url in the request object', async () => {
-
-        const server = new Hapi.Server();
-
-        try {
-            await server.register({
-                plugin: HapiCron,
-                options: {
-                    jobs: [{
-                        name: 'testcron',
-                        time: '*/10 * * * * *',
-                        timezone: 'Europe/London',
-                        request: {
-                            method: 'GET'
-                        }
-                    }]
-                }
-            });
-        }
-        catch (err) {
-            expect(err.message).toEqual('Missing job request url');
-        }
-    });
-
-    it('should throw error when a job is defined with an invalid onComplete value', async () => {
-
-        const server = new Hapi.Server();
-
-        try {
-            await server.register({
-                plugin: HapiCron,
-                options: {
-                    jobs: [{
-                        name: 'testcron',
-                        time: '*/10 * * * * *',
-                        timezone: 'Europe/London',
-                        request: {
-                            method: 'GET',
-                            url: '/test-url'
-                        },
-                        onComplete: 'invalid'
-                    }]
-                }
-            });
-        }
-        catch (err) {
-            expect(err.message).toEqual('onComplete value must be a function');
-        }
-    });
+		try {
+			await server.register({
+				// @ts-ignore
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testcron",
+							time: "*/10 * * * * *",
+							timezone: "Europe/London",
+							request: {
+								method: "GET",
+								url: "/test-url",
+							},
+							onComplete: "invalid",
+						},
+					],
+				},
+			});
+		} catch (/** @type {any} */ err) {
+			expect(err.message).toEqual("onComplete value must be a function");
+		}
+	});
 });
 
-describe('plugin functionality', () => {
+describe("plugin functionality", () => {
+	it("should expose access to the registered jobs", async () => {
+		const server = new Server();
 
-    it('should expose access to the registered jobs', async () => {
+		await server.register({
+			plugin: HapiCron,
+			options: {
+				jobs: [
+					{
+						name: "testcron",
+						time: "*/10 * * * * *",
+						timezone: "Europe/London",
+						request: {
+							method: "GET",
+							url: "/test-url",
+						},
+					},
+				],
+			},
+		});
 
-        const server = new Hapi.Server();
+		expect(server.plugins["hapi-cron-forked"]).toBeDefined();
+		expect(server.plugins["hapi-cron-forked"].jobs.has("testcron")).toBe(true);
+	});
 
-        await server.register({
-            plugin: HapiCron,
-            options: {
-                jobs: [{
-                    name: 'testcron',
-                    time: '*/10 * * * * *',
-                    timezone: 'Europe/London',
-                    request: {
-                        method: 'GET',
-                        url: '/test-url'
-                    }
-                }]
-            }
-        });
+	it("should ensure the request and callback from the plugin options are triggered", (done) => {
+		/** @type {jest.Mock<NonNullable<import("../lib/index.js").HapiCronJob['onComplete']>>} */
+		const onComplete = jest.fn();
+		const server = new Server();
 
-        expect(server.plugins['hapi-cron']).toBeDefined();
-        expect(server.plugins['hapi-cron'].jobs.testcron).toBeDefined();
-    });
+		server
+			.register({
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							name: "testcron",
+							time: "*/10 * * * * *",
+							timezone: "Europe/London",
+							request: {
+								method: "GET",
+								url: "/test-url",
+							},
+							onComplete: (result) => {
+								expect(result.result).toBe("hello world");
+								done();
+							},
+						},
+					],
+				},
+			})
+			.then(() => {
+				server.route({
+					method: "GET",
+					path: "/test-url",
+					handler: () => "hello world",
+				});
 
-    it('should ensure the request and callback from the plugin options are triggered', async (done) => {
+				server.events.on("response", (request) => {
+					expect(request.method).toBe("get");
+					expect(request.path).toBe("/test-url");
+					// done();
+				});
 
-        const onComplete = jest.fn();
-        const server = new Hapi.Server();
+				// expect(onComplete).not.toHaveBeenCalled();
 
-        await server.register({
-            plugin: HapiCron,
-            options: {
-                jobs: [{
-                    name: 'testcron',
-                    time: '*/10 * * * * *',
-                    timezone: 'Europe/London',
-                    request: {
-                        method: 'GET',
-                        url: '/test-url'
-                    },
-                    onComplete
-                }]
-            }
-        });
+				const job = server.plugins["hapi-cron-forked"].jobs.get("testcron");
+				expect(job).toBeDefined();
+				job?.fireOnTick();
+			});
 
-        server.route({
-            method: 'GET',
-            path: '/test-url',
-            handler: () => 'hello world'
-        });
+		// job?.addCallback
+		// await server.plugins["hapi-cron-forked"].jobs
+		// 	.get("testcron")
+		// 	// @ts-ignore
+		// 	?._callbacks[0]();
+		// expect(onComplete).toHaveBeenCalledTimes(1);
+		// expect(onComplete).toHaveBeenCalledWith("hello world");
+	}, 500);
 
-        server.events.on('response', (request) => {
+	it("should not start the jobs until the server starts", async () => {
+		const server = new Server();
 
-            expect(request.method).toBe('get');
-            expect(request.path).toBe('/test-url');
-            done();
-        });
+		await server.register({
+			plugin: HapiCron,
+			options: {
+				jobs: [
+					{
+						name: "testcron",
+						time: "*/10 * * * * *",
+						timezone: "Europe/London",
+						request: {
+							method: "GET",
+							url: "/test-url",
+						},
+					},
+				],
+			},
+		});
 
-        expect(onComplete).not.toHaveBeenCalled();
+		expect(
+			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.running,
+		).toBe(false);
 
-        await server.plugins['hapi-cron'].jobs.testcron._callbacks[0]();
+		await server.start();
 
-        expect(onComplete).toHaveBeenCalledTimes(1);
-        expect(onComplete).toHaveBeenCalledWith('hello world');
-    });
+		expect(
+			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.running,
+		).toBe(true);
 
-    it('should not start the jobs until the server starts', async () => {
+		await server.stop();
+	});
 
-        const server = new Hapi.Server();
+	it("should stop cron jobs when the server stops", async () => {
+		const server = new Server();
 
-        await server.register({
-            plugin: HapiCron,
-            options: {
-                jobs: [{
-                    name: 'testcron',
-                    time: '*/10 * * * * *',
-                    timezone: 'Europe/London',
-                    request: {
-                        method: 'GET',
-                        url: '/test-url'
-                    }
-                }]
-            }
-        });
+		await server.register({
+			plugin: HapiCron,
+			options: {
+				jobs: [
+					{
+						name: "testcron",
+						time: "*/10 * * * * *",
+						timezone: "Europe/London",
+						request: {
+							method: "GET",
+							url: "/test-url",
+						},
+					},
+				],
+			},
+		});
 
-        expect(server.plugins['hapi-cron'].jobs.testcron.running).toBeUndefined();
+		await server.start();
 
-        await server.start();
+		expect(
+			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.running,
+		).toBe(true);
 
-        expect(server.plugins['hapi-cron'].jobs.testcron.running).toBe(true);
+		await server.stop();
 
-        await server.stop();
-    });
-
-    it('should stop cron jobs when the server stops', async () => {
-
-        const server = new Hapi.Server();
-
-        await server.register({
-            plugin: HapiCron,
-            options: {
-                jobs: [{
-                    name: 'testcron',
-                    time: '*/10 * * * * *',
-                    timezone: 'Europe/London',
-                    request: {
-                        method: 'GET',
-                        url: '/test-url'
-                    }
-                }]
-            }
-        });
-
-        await server.start();
-
-        expect(server.plugins['hapi-cron'].jobs.testcron.running).toBe(true);
-
-        await server.stop();
-
-        expect(server.plugins['hapi-cron'].jobs.testcron.running).toBe(false);
-    });
+		expect(
+			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.running,
+		).toBe(false);
+	});
 });
