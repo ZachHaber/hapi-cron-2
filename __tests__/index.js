@@ -28,7 +28,7 @@ describe("registration assertions", () => {
 					jobs: [
 						{
 							name: "testname",
-							time: "*/10 * * * * *",
+							crontab: "*/10 * * * * *",
 							timezone: "Europe/London",
 							request: {
 								url: "/test-url",
@@ -36,7 +36,7 @@ describe("registration assertions", () => {
 						},
 						{
 							name: "testname",
-							time: "*/10 * * * * *",
+							crontab: "*/10 * * * * *",
 							timezone: "Europe/London",
 							request: {
 								url: "/test-url",
@@ -60,7 +60,7 @@ describe("registration assertions", () => {
 				options: {
 					jobs: [
 						{
-							time: "*/10 * * * * *",
+							crontab: "*/10 * * * * *",
 							timezone: "Europe/London",
 							request: {
 								url: "/test-url",
@@ -108,7 +108,7 @@ describe("registration assertions", () => {
 					jobs: [
 						{
 							name: "testcron",
-							time: "invalid cron",
+							crontab: "invalid cron",
 							timezone: "Europe/London",
 							request: {
 								url: "/test-url",
@@ -132,7 +132,7 @@ describe("registration assertions", () => {
 					jobs: [
 						{
 							name: "testcron",
-							time: "*/10 * * * * *",
+							crontab: "*/10 * * * * *",
 							timezone: "invalid",
 							request: {
 								url: "/test-url",
@@ -157,7 +157,7 @@ describe("registration assertions", () => {
 					jobs: [
 						{
 							name: "testcron",
-							time: "*/10 * * * * *",
+							crontab: "*/10 * * * * *",
 							request: {
 								url: "/test-url",
 							},
@@ -181,7 +181,7 @@ describe("registration assertions", () => {
 					jobs: [
 						{
 							name: "testcron",
-							time: "*/10 * * * * *",
+							crontab: "*/10 * * * * *",
 							timezone: "Europe/London",
 						},
 					],
@@ -203,7 +203,7 @@ describe("registration assertions", () => {
 					jobs: [
 						{
 							name: "testcron",
-							time: "*/10 * * * * *",
+							crontab: "*/10 * * * * *",
 							timezone: "Europe/London",
 							request: {
 								method: "GET",
@@ -228,7 +228,7 @@ describe("registration assertions", () => {
 					jobs: [
 						{
 							name: "testcron",
-							time: "*/10 * * * * *",
+							crontab: "*/10 * * * * *",
 							timezone: "Europe/London",
 							request: {
 								method: "GET",
@@ -255,7 +255,7 @@ describe("plugin functionality", () => {
 				jobs: [
 					{
 						name: "testcron",
-						time: "*/10 * * * * *",
+						crontab: "*/10 * * * * *",
 						timezone: "Europe/London",
 						request: {
 							method: "GET",
@@ -282,7 +282,7 @@ describe("plugin functionality", () => {
 					jobs: [
 						{
 							name: "testcron",
-							time: "*/10 * * * * *",
+							crontab: "*/10 * * * * *",
 							timezone: "Europe/London",
 							request: {
 								method: "GET",
@@ -334,7 +334,7 @@ describe("plugin functionality", () => {
 				jobs: [
 					{
 						name: "testcron",
-						time: "*/10 * * * * *",
+						crontab: "*/10 * * * * *",
 						timezone: "Europe/London",
 						request: {
 							method: "GET",
@@ -367,7 +367,7 @@ describe("plugin functionality", () => {
 				jobs: [
 					{
 						name: "testcron",
-						time: "*/10 * * * * *",
+						crontab: "*/10 * * * * *",
 						timezone: "Europe/London",
 						request: {
 							method: "GET",
