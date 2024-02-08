@@ -3,7 +3,7 @@ import { HapiCronJob } from "./index.js";
 export * from "./hapi.js";
 declare module "@hapi/hapi" {
 	export interface PluginProperties {
-		"hapi-cron-forked": {
+		hapiCron: {
 			/**
 			 * The jobs that currently exist.
 			 */

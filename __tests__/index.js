@@ -266,13 +266,11 @@ describe("plugin functionality", () => {
 			},
 		});
 
-		expect(server.plugins["hapi-cron-forked"]).toBeDefined();
-		expect(server.plugins["hapi-cron-forked"].jobs.has("testcron")).toBe(true);
+		expect(server.plugins.hapiCron).toBeDefined();
+		expect(server.plugins.hapiCron.jobs.has("testcron")).toBe(true);
 	});
 
 	it("should ensure the request and callback from the plugin options are triggered", (done) => {
-		/** @type {jest.Mock<NonNullable<import("../lib/index.js").HapiCronJob['onComplete']>>} */
-		const onComplete = jest.fn();
 		const server = new Server();
 
 		server
@@ -311,13 +309,13 @@ describe("plugin functionality", () => {
 
 				// expect(onComplete).not.toHaveBeenCalled();
 
-				const job = server.plugins["hapi-cron-forked"].jobs.get("testcron");
+				const job = server.plugins.hapiCron.jobs.get("testcron");
 				expect(job).toBeDefined();
 				job?.cron?.fireOnTick();
 			});
 
 		// job?.addCallback
-		// await server.plugins["hapi-cron-forked"].jobs
+		// await server.plugins.hapiCron.jobs
 		// 	.get("testcron")
 		// 	// @ts-ignore
 		// 	?._callbacks[0]();
@@ -345,15 +343,15 @@ describe("plugin functionality", () => {
 			},
 		});
 
-		expect(
-			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.cron.running,
-		).toBe(false);
+		expect(server.plugins.hapiCron.jobs.get("testcron")?.cron.running).toBe(
+			false,
+		);
 
 		await server.start();
 
-		expect(
-			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.cron.running,
-		).toBe(true);
+		expect(server.plugins.hapiCron.jobs.get("testcron")?.cron.running).toBe(
+			true,
+		);
 
 		await server.stop();
 	});
@@ -380,14 +378,14 @@ describe("plugin functionality", () => {
 
 		await server.start();
 
-		expect(
-			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.cron.running,
-		).toBe(true);
+		expect(server.plugins.hapiCron.jobs.get("testcron")?.cron.running).toBe(
+			true,
+		);
 
 		await server.stop();
 
-		expect(
-			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.cron.running,
-		).toBe(false);
+		expect(server.plugins.hapiCron.jobs.get("testcron")?.cron.running).toBe(
+			false,
+		);
 	});
 });
