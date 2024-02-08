@@ -313,7 +313,7 @@ describe("plugin functionality", () => {
 
 				const job = server.plugins["hapi-cron-forked"].jobs.get("testcron");
 				expect(job).toBeDefined();
-				job?.fireOnTick();
+				job?.cron?.fireOnTick();
 			});
 
 		// job?.addCallback
@@ -346,13 +346,13 @@ describe("plugin functionality", () => {
 		});
 
 		expect(
-			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.running,
+			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.cron.running,
 		).toBe(false);
 
 		await server.start();
 
 		expect(
-			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.running,
+			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.cron.running,
 		).toBe(true);
 
 		await server.stop();
@@ -381,13 +381,13 @@ describe("plugin functionality", () => {
 		await server.start();
 
 		expect(
-			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.running,
+			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.cron.running,
 		).toBe(true);
 
 		await server.stop();
 
 		expect(
-			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.running,
+			server.plugins["hapi-cron-forked"].jobs.get("testcron")?.cron.running,
 		).toBe(false);
 	});
 });
