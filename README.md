@@ -1,4 +1,4 @@
-# hapi-cron
+# hapi-cron-2
 
 A Hapi plugin to setup cron jobs that will call predefined server routes at specified times.
 
@@ -8,17 +8,17 @@ This plugin is compatible with **hapi** v17+ and requires Node v16+.
 
 ## Installation
 
-Add `hapi-cron-forked` as a dependency to your project:
+Add `hapi-cron-2` as a dependency to your project:
 
 ```bash
-npm install --save hapi-cron-forked
+npm install --save hapi-cron-2
 ```
 
 ## Usage
 
 ```javascript
 const Hapi = require("@hapi/hapi");
-const HapiCron = require("hapi-cron-forked");
+const HapiCron = require("hapi-cron-2");
 
 const server = new Hapi.Server();
 
@@ -92,7 +92,7 @@ Ranges. E.g. 1-3,5
 Steps. E.g. */2
 ```
 
-[Read up on cron patterns here](http://crontab.org). Note the examples in the link have five fields, and 1 minute as the finest granularity, but the node cron module allows six fields, with 1 second as the finest granularity.
+[Read up on cron patterns here](http://crontab.org) and check https://crontab.guru/ for help writing them. **Note** the examples in both links have five fields, and 1 minute as the finest granularity, but the node cron module allows six fields, with 1 second as the finest granularity.
 
 ### Cron Ranges
 
