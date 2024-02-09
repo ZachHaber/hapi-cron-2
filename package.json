@@ -14,7 +14,11 @@
 		"type": "git",
 		"url": "git+https://github.com/zachhaber/hapi-cron-2.git"
 	},
-	"keywords": ["hapi", "plugin", "cron"],
+	"keywords": [
+		"hapi",
+		"plugin",
+		"cron"
+	],
 	"author": "ZachHaber",
 	"license": "BSD-3-Clause",
 	"bugs": {
@@ -39,7 +43,11 @@
 	"engines": {
 		"node": ">=16.0.0"
 	},
-	"files": ["lib", "LICENSE", "README.md"],
+	"files": [
+		"lib",
+		"LICENSE",
+		"README.md"
+	],
 	"config": {
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
