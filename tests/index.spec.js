@@ -283,6 +283,47 @@ describe("plugin functionality", () => {
 			});
 	}, 500);
 
+	it("should ensure the request has the job context", (done) => {
+		const server = new Server();
+
+		server
+			.register({
+				plugin: HapiCron,
+				options: {
+					jobs: [
+						{
+							...baseJob,
+							onComplete: (result) => {
+								expect(result.result).toBe("hello world");
+								server.stop().then(() => done());
+							},
+						},
+					],
+				},
+			})
+			.then(() => {
+				server.route({
+					method: "GET",
+					path: "/test-url",
+					handler: (request) => {
+						expect(request.plugins.hapiCron.job).toBe(
+							server.plugins.hapiCron.jobs.get(baseJob.name),
+						);
+						return "hello world";
+					},
+				});
+
+				server.events.on("response", (request) => {
+					expect(request.method).toBe("get");
+					expect(request.path).toBe("/test-url");
+				});
+
+				const job = server.plugins.hapiCron.jobs.get(baseJob.name);
+				expect(job).toBeDefined();
+				job?.cron?.fireOnTick();
+			});
+	}, 500);
+
 	it("should not start the jobs until the server starts", async () => {
 		const { server, plugin } = await createServer();
 
