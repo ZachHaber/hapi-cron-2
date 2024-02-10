@@ -1,40 +1,31 @@
 {
-	"name": "hapi-cron-2",
+	"name": "hapi-cron-forked",
 	"type": "module",
-	"version": "1.0.0-beta0",
+	"version": "1.0.0",
 	"description": "A Hapi plugin to setup cron jobs that will call predefined server routes at specified times",
 	"scripts": {
-		"test": "npm run lint && npm run jest",
-		"lint": "biome ci .",
-		"jest": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
-		"postinstall": "lefthook install"
+		"test": "npm run biome && npm run jest",
+		"biome": "biome ci .",
+		"jest": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand"
 	},
 	"exports": "./lib/index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/zachhaber/hapi-cron-2.git"
+		"url": "git+https://github.com/zachhaber/hapi-cron-forked.git"
 	},
-	"keywords": [
-		"hapi",
-		"plugin",
-		"cron"
-	],
+	"keywords": ["hapi", "plugin", "cron"],
 	"author": "ZachHaber",
 	"license": "BSD-3-Clause",
 	"bugs": {
-		"url": "https://github.com/zachhaber/hapi-cron-2/issues"
+		"url": "https://github.com/zachhaber/hapi-cron-forked/issues"
 	},
-	"homepage": "https://github.com/zachhaber/hapi-cron-2#readme",
+	"homepage": "https://github.com/zachhaber/hapi-cron-forked#readme",
 	"devDependencies": {
 		"@biomejs/biome": "1.5.3",
 		"@hapi/hapi": "^21.3.3",
 		"@jest/globals": "^29.7.0",
 		"@types/node": "^20.11.16",
-		"commitizen": "4.3.0",
-		"cz-conventional-changelog": "^3.3.0",
 		"jest": "^29.7.0",
-		"joi": "^17.12.1",
-		"lefthook": "^1.6.1",
 		"typescript": "^5.3.3"
 	},
 	"dependencies": {
@@ -42,16 +33,18 @@
 		"cron": "^3.1.6"
 	},
 	"engines": {
-		"node": ">=16.0.0"
+		"node": ">=8.0.0"
 	},
-	"files": [
-		"lib",
-		"LICENSE",
-		"README.md"
-	],
-	"config": {
-		"commitizen": {
-			"path": "./node_modules/cz-conventional-changelog"
-		}
+	"jest": {
+		"collectCoverage": true,
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		},
+		"testEnvironment": "node"
 	}
 }
