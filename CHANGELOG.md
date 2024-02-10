@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/ZachHaber/hapi-cron-2/compare/hapi-cron-2-v1.0.0...hapi-cron-2-v1.0.1) (2024-02-10)
+
+
+### Bug Fixes
+
+* **deps:** prevent lefthook error when installing ([09a8d93](https://github.com/ZachHaber/hapi-cron-2/commit/09a8d93ad073cc69efbf5cdb7b5bcf3ca2421a4c))
+
 ## 1.0.0 (2024-02-10)
 
 
