@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/ZachHaber/hapi-cron-2/compare/hapi-cron-2-v1.0.1...hapi-cron-2-v1.0.2) (2024-02-11)
+
+
+### Bug Fixes
+
+* **types:** fix issue with type definitions ([b2b0f02](https://github.com/ZachHaber/hapi-cron-2/commit/b2b0f024f1d64fcbb98901fabd87d58a099b9fdd))
+
 ## [1.0.1](https://github.com/ZachHaber/hapi-cron-2/compare/hapi-cron-2-v1.0.0...hapi-cron-2-v1.0.1) (2024-02-10)
 
 
