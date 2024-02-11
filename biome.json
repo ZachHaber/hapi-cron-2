@@ -12,14 +12,15 @@
 				"noUndeclaredVariables": "error"
 			}
 		},
-		"ignore": ["coverage", "node_modules"]
+		"ignore": ["coverage", "node_modules", "dist"]
 	},
 	"formatter": {
 		"ignore": [
 			"coverage",
 			"node_modules",
 			".release-please-manifest.json",
-			"./package.json"
+			"./package.json",
+			"dist"
 		]
 	}
 }
