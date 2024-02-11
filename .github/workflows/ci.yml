@@ -18,3 +18,5 @@ jobs:
         run: npm run lint
       - name: Test
         run: npm run jest
+      - name: Types
+        run: npx tsc --noEmit

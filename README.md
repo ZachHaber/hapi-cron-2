@@ -6,6 +6,8 @@ A Hapi plugin to setup cron jobs that will call predefined server routes at spec
 
 This plugin is compatible with **hapi** v17+ and requires Node v16+.
 
+This also requires `moduleResolution`: `nodenext` or `node16` for typescript support.
+
 ## Installation
 
 Add `hapi-cron-2` as a dependency to your project:
@@ -16,16 +18,62 @@ npm install --save hapi-cron-2
 
 ## Usage
 
-```javascript
-const Hapi = require("@hapi/hapi");
-const HapiCron = require("hapi-cron-2");
+For `"type": "module"`:
 
-const server = new Hapi.Server();
+```js
+import { Server } from "@hapi/hapi";
+import HapiCron from "hapi-cron-2";
+
+const server = new Server();
 
 async function allSystemsGo() {
 	try {
 		await server.register({
 			plugin: HapiCron,
+			options: {
+				jobs: [
+					{
+						name: "testcron",
+						crontab: "*/10 * * * * *",
+						timezone: "Europe/London",
+						request: {
+							method: "GET",
+							url: "/test-url",
+						},
+						onComplete: (res) => {
+							console.log(res.result); // 'hello world'
+						},
+					},
+				],
+			},
+		});
+
+		server.route({
+			method: "GET",
+			path: "/test-url",
+			handler: function (request, h) {
+				return "hello world";
+			},
+		});
+
+		await server.start();
+	} catch (err) {
+		console.info("there was an error");
+	}
+}
+
+allSystemsGo();
+```
+
+For `"type": "commonjs"`:
+
+```js
+const Hapi = require("hapi");
+
+async function allSystemsGo() {
+	try {
+		await server.register({
+			plugin: await import("hapi-cron-2"),
 			options: {
 				jobs: [
 					{

@@ -15,6 +15,11 @@
 		"ignore": ["coverage", "node_modules"]
 	},
 	"formatter": {
-		"ignore": ["coverage", "node_modules", ".release-please-manifest.json"]
+		"ignore": [
+			"coverage",
+			"node_modules",
+			".release-please-manifest.json",
+			"./package.json"
+		]
 	}
 }

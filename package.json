@@ -7,18 +7,15 @@
 		"test": "npm run lint && npm run jest",
 		"lint": "biome ci .",
 		"jest": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
-		"prepare": "lefthook install"
+		"prepare": "lefthook install",
+		"prepublishOnly": "tsc"
 	},
-	"exports": "./lib/index.js",
+	"exports": { "import": "./dist/index.js" },
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/zachhaber/hapi-cron-2.git"
 	},
-	"keywords": [
-		"hapi",
-		"plugin",
-		"cron"
-	],
+	"keywords": ["hapi", "plugin", "cron"],
 	"author": "ZachHaber",
 	"license": "BSD-3-Clause",
 	"bugs": {
@@ -44,11 +41,7 @@
 	"engines": {
 		"node": ">=16.0.0"
 	},
-	"files": [
-		"lib",
-		"LICENSE",
-		"README.md"
-	],
+	"files": ["dist", "LICENSE", "README.md"],
 	"config": {
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"

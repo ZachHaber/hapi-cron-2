@@ -2,10 +2,11 @@
 	"compilerOptions": {
 		"allowJs": true,
 		"strict": true,
-		"noEmit": true,
+		"outDir": "dist",
+		"declaration": true,
 		"module": "Node16",
 		"moduleResolution": "Node16",
 		"checkJs": true
 	},
-	"include": ["lib/**/*", "tests/**/*"]
+	"include": ["lib/**/*"]
 }
